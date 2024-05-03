@@ -4018,16 +4018,16 @@ namespace WPEFramework {
         uint32_t SystemServices::getPowerStateBeforeReboot (const JsonObject& parameters,
             JsonObject& response)
         {
-			LOGWARN(" %s: %d Debug Log - Entry \n",__FUNCTION__,__LINE__);
+	    LOGWARN(" %s: %d Debug Log - Entry \n",__FUNCTION__,__LINE__);
             bool retVal = false;
 			
-            LOGWARN("Debug Log - m_powerStateBeforeRebootValid is now: %s", m_powerStateBeforeRebootValid ? "true" : "false")
+            LOGWARN("Debug Log - m_powerStateBeforeRebootValid is now: %s", m_powerStateBeforeRebootValid ? "true" : "false");
             if (m_powerStateBeforeRebootValid) {
                 response["state"] = m_powerStateBeforeReboot;
                 retVal = true;
                 LOGINFO("Got cached powerStateBeforeReboot: '%s'", m_powerStateBeforeReboot.c_str());
             } else {
-				LOGINFO("Debug Log - Else loop called");
+		LOGWARN("Debug Log - Else loop called");
                 IARM_Bus_PWRMgr_GetPowerStateBeforeReboot_Param_t param;
                 IARM_Result_t res = IARM_Bus_Call(IARM_BUS_PWRMGR_NAME,
                                        IARM_BUS_PWRMGR_API_GetPowerStateBeforeReboot, (void *)&param,
@@ -4036,22 +4036,21 @@ namespace WPEFramework {
                 LOGWARN("getPowerStateBeforeReboot called, current powerStateBeforeReboot is: %s\n",
                          param.powerStateBeforeReboot);
                 response["state"] = string (param.powerStateBeforeReboot);
-				LOGWARN("Debug log - getPowerStateBeforeReboot called, current powerStateBeforeReboot is: %s\n",
+		LOGWARN("Debug log - getPowerStateBeforeReboot called, current powerStateBeforeReboot is: %s\n",
                          param.powerStateBeforeReboot);
                 if (IARM_RESULT_SUCCESS == res) {
-					LOGWARN("Debug Log - Calling if \n");
+		    LOGWARN("Debug Log - Calling if \n");
                     retVal = true;
                     m_powerStateBeforeReboot = param.powerStateBeforeReboot;
-					LOGINFO("Debug log - powerStateBeforeReboot: '%s'", m_powerStateBeforeReboot.c_str());
+		    LOGWARN("Debug log - powerStateBeforeReboot: '%s'", m_powerStateBeforeReboot.c_str());
                     m_powerStateBeforeRebootValid = true;
                 } else {
-					LOGWARN("Debug Log - Calling here \n");
+		    LOGWARN("Debug Log - Calling here \n");
                     retVal = false;
                 }
             }
-			LOGWARN("Debug Log - The retVal is %d \n",retVal);
-			
-			LOGWARN(" %s: %d Debug Log - Exit \n",__FUNCTION__,__LINE__);
+	    LOGWARN("Debug Log - The retVal is %d \n",retVal);
+	    LOGWARN(" %s: %d Debug Log - Exit \n",__FUNCTION__,__LINE__);
 
             returnResponse(retVal);
         }
